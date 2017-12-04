@@ -7,13 +7,23 @@ struct Point
 {
 	float x;
 	float y;
-	Point(){}
+	Point() {}
 	Point(float xx, float yy)
 	{
 		this->x = xx;
 		this->y = yy;
 	}
 };
+
+Point rightMostPoint(const Point p1, const Point p2)
+{
+	return (p1.x > p2.x) ? p1 : p2;
+}
+
+Point leftMostPoint(const Point p1, const Point p2)
+{
+	return (p1.x < p2.x) ? p1 : p2;
+}
 
 Point lineLineIntersection(Point A, Point B, Point C, Point D)
 {
@@ -72,10 +82,10 @@ int doIntersect(Point p1, Point q1, Point p2, Point q2)
 	if (o1 != o2 && o3 != o4)
 		return 1;	// Se intersecteaza
 
-    if(!orientation(p1,p2,q1) && !orientation(p1,q2,q1))
-        return 0;   // Sunt coliniare
+	if (!orientation(p1, p2, q1) && !orientation(p1, q2, q1))
+		return 0;   // Sunt coliniare
 
-	// p1, q1 si p2 sunt coliniare si p2 se afla pe segmentul p1q1
+					// p1, q1 si p2 sunt coliniare si p2 se afla pe segmentul p1q1
 	if (o1 == 0 && onSegment(p1, p2, q1)) return 1;
 
 	// p1, q1 si q2  sunt coliniare si q2 se afla pe segmentul p1q1
@@ -92,43 +102,53 @@ int doIntersect(Point p1, Point q1, Point p2, Point q2)
 
 int main()
 {
-	 Point p1(0,0);
-     Point q1(2,2);
-	 Point p2(3,3);
-	 Point q2(1,1);
-    int result = doIntersect(p1, q1, p2, q2);
+	Point p1(0, 0);
+	Point q1(2, 2);
+	Point p2(1, 3);
+	Point q2(1, -3);
+	int result = doIntersect(p1, q1, p2, q2);
 	if (result == 1)
 	{
 		// Determinam punctele de intersectie
 		Point result = lineLineIntersection(p1, q1, p2, q2);
-		cout << " Segmentele se intersecteaza in punctul : " << result.x << " " << result.y;
+		cout << " Segmentele se intersecteaza in punctul : " << result.x << " " << result.y << endl;
 
-	} else if(result == 0)
+	}
+	else if (result == 0)
 	{
-	    cout << "Segmentele sunt coliniare.\n";
-	    if(onSegment(p1,p2,q1) && onSegment(p1,q2,q1))
-        {
-            //cout << "Intersectia este segmentul [p2,q2]";
-            cout << "Intersectia este segmentul [(" << p2.x << "," << p2.y << ")(" << q2.x << "," << q2.y << ")]";
-        }
-        else if(onSegment(p2,p1,q2) && onSegment(p2,q1,q2))
-        {
-            //cout << "Intersectia este segmentul [p1,q1]";
-            cout << "Intersectia este segmentul [(" << p1.x << "," << p1.y << ")(" << q1.x << "," << q1.y << ")]";
-        }
-        else if (onSegment(p1,p2,q1) && !onSegment(p1,q2,q1))
-        {
-            //cout << "Intersectia este segmentul [p2,q1]";
-            cout << "Intersectia este segmentul [(" << p2.x << "," << p2.y <<")(" << q1.x << "," << q1.y << ")]\n";
-        }
-        else if(onSegment(p2,p1,q2) && !onSegment(p2,q1,q2))
-        {
-            //cout << "Intersectia este segmentul [p1,q2]";
-            cout << "Intersectia este segmentul [(" << p1.x << "," << p1.y << ")(" << q2.x << "," << q2.y << ")]\n";
-        }
-	} else
+		Point l1, l2, r1, r2;
+		l1 = leftMostPoint(p1, q1);
+		r1 = rightMostPoint(p1, q1);
+		l2 = leftMostPoint(p2, q2);
+		r2 = rightMostPoint(p2, q2);
+
+		cout << "Segmentele sunt coliniare.\n";
+		if (onSegment(l1, l2, r1) && onSegment(l1, r2, r1))
+		{
+			//cout << "Intersectia este segmentul [l2,r2]";
+			cout << "Intersectia este segmentul [(" << l2.x << "," << l2.y << ")(" << r2.x << "," << r2.y << ")]" << endl;
+		}
+		else if (onSegment(l2, l1, r2) && onSegment(l2, r1, r2))
+		{
+			//cout << "Intersectia este segmentul [l1,r1]";
+			cout << "Intersectia este segmentul [(" << l1.x << "," << l1.y << ")(" << r1.x << "," << r1.y << ")]" << endl;
+		}
+		else if (onSegment(l1, l2, r1) && !onSegment(l1, r2, r1))
+		{
+			//cout << "Intersectia este segmentul [l2,r1]";
+			cout << "Intersectia este segmentul [(" << l2.x << "," << l2.y << ")(" << r1.x << "," << r1.y << ")]" << endl;
+		}
+		else if (onSegment(l2, l1, r2) && !onSegment(l2, r1, l2))
+		{
+			//cout << "Intersectia este segmentul [l1,r2]";
+			cout << "Intersectia este segmentul [(" << l1.x << "," << l1.y << ")(" << r2.x << "," << r2.y << ")]" << endl;
+		}
+		elsey
+			cout << "Punctele nu se intersecteaza.\n";
+	}
+	else
 	{
-        cout << "Segmentele nu se intersecteaza.\n";
+		cout << "Segmentele nu se intersecteaza.\n";
 	}
 
 	return 0;
