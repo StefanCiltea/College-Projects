@@ -143,7 +143,7 @@ int main()
 			//cout << "Intersectia este segmentul [l1,r2]";
 			cout << "Intersectia este segmentul [(" << l1.x << "," << l1.y << ")(" << r2.x << "," << r2.y << ")]" << endl;
 		}
-		elsey
+		else
 			cout << "Punctele nu se intersecteaza.\n";
 	}
 	else
